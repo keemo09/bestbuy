@@ -1,7 +1,11 @@
 class Product:
     def __init__(self, name, price, quantity):
         if price < 0 or quantity < 0:
-            raise ValueError("Number cant be negative")
+            raise ValueError("Number can´t be negative!")
+
+        # Checks if name is not empty
+        if len(name) == 0:
+            raise ValueError("Name can´t be empty!")
         self.name = name
         self.price = price
         self.quantity = quantity
@@ -43,14 +47,16 @@ class Product:
         """
         Deactivate the Product.
         """
-        self.activate = False
+        self.active = False
 
     def show(self) -> str:
         """
         Returns a string that represents the product.
         """
-        product_representation = f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
-        
+        product_representation = (
+            f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
+        )
+
         return product_representation
 
     def buy(self, quantity) -> float:
@@ -60,25 +66,15 @@ class Product:
         # Validate data
         if quantity < 0:
             raise ValueError("Number cant be negative")
-        
+
         # Check if quantity ist bigger then availible
-        if self.quantity >= quantity:
-            self.quantity -= quantity
-            return self.show()
-        else:
+        if self.quantity < quantity:
             raise ValueError("The quantity you want to buy is bigger then availible")
-        
 
+        # Update quantity
+        self.quantity -= quantity
 
-bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-mac = Product("MacBook Air M2", price=1450, quantity=100)
-
-print(bose.buy(50))
-print(mac.buy(100))
-print(mac.is_active())
-
-bose.show()
-mac.show()
-
-bose.set_quantity(1000)
-bose.show()
+        # If quantity is 0 deactivate product
+        if self.quantity == 0:
+            self.deactivate()
+        return self.show()

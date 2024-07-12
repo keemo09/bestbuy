@@ -39,22 +39,45 @@ def make_order(store_instance):
     Print the total price of order and refresh the quantity of the store.
     '''
     print_product_list(store_instance)  # Print the active products.
+    product_out_of_stock = False
     shopping = True    
     shopping_cart = []
     while shopping == True: 
+
+        # User input
         product_choice = input("Which product # do you want?")
         quantity_choice =  input("What amount do you want?")
-
+        
         # Checks if user input is not empty.
         if product_choice != "" or quantity_choice != "":
-            product = store_instance.get_all_products()[int(product_choice)-1]  
-            quantity = int(quantity_choice)
-            shopping_cart.append((product, quantity))
+
+            # Checks if product_choice is valid product
+            if int(product_choice) <= len(store_instance.get_all_products()):
+
+                # Store data
+                product = store_instance.get_all_products()[int(product_choice)-1]  
+                quantity = int(quantity_choice)
+
+                # Checks if quantity is availible 
+                if quantity <= product.get_get_quantity()
+                    shopping_cart.append((product, quantity))
+                    print("Product added to list!")
+
+                # If quantity is not availible
+                else:
+                    product_out_of_stock = True
+           
+            # If product is not valid        
+            else:
+                print("Error adding product!")
         else:
             shopping = False
-    if shopping_cart != 0:
+
+    if shopping_cart != 0 and product_out_of_stock == False:
         total_price = store_instance.order(shopping_cart)
         print(f"Order made! Total payment: ${total_price}")
+    else:
+        print("Error while making order! Quantity larger than what exists")
 
 
 def quit():
