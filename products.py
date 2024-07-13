@@ -1,5 +1,4 @@
 from store import Store
-from promotions import Promotion
 
 
 class Product:
@@ -57,7 +56,7 @@ class Product:
         """
         self.active = False
 
-    def show(self) -> str:
+    def __str__(self) -> str:
         """
         Returns a string that represents the product.
         """
@@ -77,7 +76,7 @@ class Product:
         # Validate data
         if quantity < 0:
             raise ValueError("Number cant be negative")
-  
+
         # Check if quantity ist bigger then availible
         if self.quantity < quantity:
             raise ValueError("The quantity you want to buy is bigger then availible")
@@ -88,23 +87,28 @@ class Product:
         # If quantity is 0 deactivate product
         if self.quantity == 0:
             self.deactivate()
-        return self.show()
-    
+        return self.__str__()
+
     def set_promotion(self, promotion):
-        '''
+        """
         Set a Promotion.
-        '''
+        """
         if isinstance(promotion, Promotion):
             self.promotion = promotion
         else:
             raise ValueError("Promotion must be a Promotion instance!")
-    
+
     def get_promotion(self):
-        '''
+        """
         Get a Promotion.
-        '''
+        """
         return self.promotion()
 
+    def __lt__(self, other):
+        return self.price < other.price
+
+    def __gt__(self, other):
+        return self.price > other.price
 
 
 class NonStockedProduct(Product):
@@ -128,7 +132,7 @@ class NonStockedProduct(Product):
     def set_quantity(self, quantity):
         raise NotImplementedError("Product has no quantity")
 
-    def show(self) -> str:
+    def __str__(self) -> str:
         """
         Returns a string that represents the product.
         """
@@ -140,15 +144,15 @@ class NonStockedProduct(Product):
         return product_representation
 
     def buy(self):
-        return self.show()
+        return self.__str__()
 
 
 class LimitedProduct(Product):
-    def __init__(self, name, price, quantity, maximum):
+    def __init__(self, name, price, quantity, maximum=1):
         super().__init__(name, price, quantity)
         self.maximum = maximum
 
-    def show(self) -> str:
+    def __str__(self) -> str:
         """
         Returns a string that represents the product.
         """
@@ -181,4 +185,4 @@ class LimitedProduct(Product):
         # If quantity is 0 deactivate product
         if self.quantity == 0:
             self.deactivate()
-        return self.show()
+        return self.__str__()
