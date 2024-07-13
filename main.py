@@ -1,6 +1,7 @@
 import products
 import store
 import sys
+import promotions
 
 
 # setup initial stock of inventory
@@ -59,7 +60,7 @@ def make_order(store_instance):
                 quantity = int(quantity_choice)
 
                 # Checks if quantity is availible 
-                if quantity <= product.get_get_quantity()
+                if quantity <= product.get_quantity():
                     shopping_cart.append((product, quantity))
                     print("Product added to list!")
 
