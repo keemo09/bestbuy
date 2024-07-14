@@ -8,8 +8,21 @@ import promotions
 product_list = [
     products.Product("MacBook Air M2", price=1450, quantity=100),
     products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-    products.Product("Google Pixel 7", price=500, quantity=250),
+    products.Product("Pixel 7", price=500, quantity=250),
+    products.NonStockedProduct("Windows License", price=125),
+    products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1),
 ]
+
+# Create promotion catalog
+second_half_price = promotions.SecondHalfPrice("Second Half price!")
+third_one_free = promotions.ThirdOneFree("Third One Free!")
+thirty_percent = promotions.PercentDiscount("30% off!", percent=30)
+
+# Add promotions to products
+product_list[0].set_promotion(second_half_price)
+product_list[1].set_promotion(third_one_free)
+product_list[3].set_promotion(thirty_percent)
+
 best_buy = store.Store(product_list)
 
 
@@ -21,8 +34,7 @@ def print_product_list(store_instance):
     print("------")
     counter = 1
     for product in product_list:
-        product_data = product.show()
-        print(f"{counter}. {product_data}")
+        print(f"{counter}. {product}")
         counter += 1
     print("------")
 
@@ -127,15 +139,7 @@ def start(store_instance):
 
 
 def main():
-    # start(best_buy)
-    # setup initial stock of inventory
-    mac = products.Product("MacBook Air M2", price=1450, quantity=100)
-    bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-
-    best_buy = store.Store([mac, bose])
-    print(mac)  # Should print `MacBook Air M2, Price: $1450 Quantity:100`
-    print(mac > bose)  # Should print True
-    print(mac in best_buy)  # Should print True
+    start(best_buy)
 
 
 if __name__ == "__main__":

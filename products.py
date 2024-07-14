@@ -66,7 +66,6 @@ class Product:
 
         if self.promotion != None:
             product_representation += f", Promotion: {self.promotion.name}"
-
         return product_representation
 
     def buy(self, quantity) -> float:
@@ -93,10 +92,7 @@ class Product:
         """
         Set a Promotion.
         """
-        if isinstance(promotion, Promotion):
-            self.promotion = promotion
-        else:
-            raise ValueError("Promotion must be a Promotion instance!")
+        self.promotion = promotion
 
     def get_promotion(self):
         """
@@ -105,9 +101,15 @@ class Product:
         return self.promotion()
 
     def __lt__(self, other):
+        # Check if compares with Product class.
+        if isinstance(other, Product) == False:
+            raise TypeError("You can only compare with Product class!")
         return self.price < other.price
 
     def __gt__(self, other):
+        # Check if compares with Product class.
+        if isinstance(other, Product) == False:
+            raise TypeError("You can only compare with Product class!")
         return self.price > other.price
 
 

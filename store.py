@@ -55,5 +55,8 @@ class Store:
         return product in self.product_list
 
     def __add__(self, other):
+        # Check if compares with Store class.
+        if isinstance(other, Store) == False:
+            raise TypeError("Can only compare with Store class!")
         combined_product_list = self.product_list + other.product_list
         return Store(combined_product_list)
